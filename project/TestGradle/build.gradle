@@ -1,0 +1,56 @@
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+mainClassName = 'cl.principal.Application'
+buildscript {
+        ext {
+                springBootVersion = '2.1.0.RELEASE'
+        }
+        repositories {
+                mavenCentral()
+        }
+        dependencies {
+                classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        }
+}
+
+bootJar {
+        baseName = 'TestGradle'
+        version =  '0.1.0'
+}
+
+//[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+// NetBeans will automatically add "run" and "debug" tasks relying on the
+// "mainClass" property. You may however define the property prior executing
+// tasks by passing a "-PmainClass=<QUALIFIED_CLASS_NAME>" argument.
+//
+// Note however, that you may define your own "run" and "debug" task if you
+// prefer. In this case NetBeans will not add these tasks but you may rely on
+// your own implementation.
+if (!hasProperty('mainClass')) {
+    ext.mainClass = ''
+}
+
+repositories {
+    mavenCentral()
+    // You may define additional repositories, or even remove "mavenCentral()".
+    // Read more about repositories here:
+    //   http://www.gradle.org/docs/current/userguide/dependency_management.html#sec:repositories
+}
+
+dependencies {
+    // TODO: Add dependencies here ...
+    // You can read more about how to add dependency here:
+    //   http://www.gradle.org/docs/current/userguide/dependency_management.html#sec:how_to_declare_your_dependencies
+    compile('org.springframework.boot:spring-boot-starter-web','org.apache.tomcat.embed:tomcat-embed-jasper'
+	,'javax.servlet:jstl','mysql:mysql-connector-java','org.springframework.boot:spring-boot-starter-data-jpa','org.springframework.boot:spring-boot-starter-jdbc','org.springframework.boot:spring-boot-devtools')
+    testCompile('org.springframework.boot:spring-boot-starter-test')  
+    testCompile group: 'junit', name: 'junit', version: '4.10'
+}
