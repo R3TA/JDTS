@@ -17,7 +17,7 @@
         <h1>MANTENEDOR DE PROFESOR</h1>
 		<a href = "/mantenedor/profesor">VOLVER</a>
 		<div>
-			<form action="/mantenedor/profesor/edited" method="GET">
+			<form action="/mantenedor/profesor/edited" method="POST">
 				<c:forEach items="${requestScope.profesor}" var="profesor" >
 					<table border="1">
 						<label>id</label>

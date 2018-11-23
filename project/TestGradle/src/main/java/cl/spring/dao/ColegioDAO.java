@@ -9,33 +9,26 @@ import cl.spring.model.Colegio;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Martin
  */
+@Repository
 public class ColegioDAO implements IColegioDAO{    
+    @Autowired
     private JdbcTemplate jdbcTemplate;
-    
-    public ColegioDAO() {}
     
     //Insert colegio in database
     @Override
     public void insertarColegio(Colegio colegio){           
-        try {
-            jdbcTemplate = new JdbcTemplate(dataSource());
-        } catch (SQLException ex) {
-            Logger.getLogger(ColegioDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
         String query = "INSERT INTO colegio(nombre,direccion) VALUES (?,?)";
         jdbcTemplate.update(query,colegio.getNombre(),colegio.getDireccion());  
     }
@@ -43,11 +36,6 @@ public class ColegioDAO implements IColegioDAO{
     //Read colegio from database
     @Override
     public Colegio leerColegio(int id){
-        try {
-            jdbcTemplate = new JdbcTemplate(dataSource());
-        } catch (SQLException ex) {
-            Logger.getLogger(ColegioDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
         String query = "SELECT *FROM colegio WHERE id="+id;
  
         return jdbcTemplate.query(query, new ResultSetExtractor<Colegio>() {
@@ -68,11 +56,6 @@ public class ColegioDAO implements IColegioDAO{
     //Read all colegio from database
     @Override
     public List<Colegio> leerAllColegio(){
-        try {
-            jdbcTemplate = new JdbcTemplate(dataSource());
-        } catch (SQLException ex) {
-            Logger.getLogger(ColegioDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
         String query = "SELECT *FROM colegio";
         List<Colegio> lista = jdbcTemplate.query(query, new RowMapper<Colegio>() {
             @Override
@@ -91,11 +74,6 @@ public class ColegioDAO implements IColegioDAO{
     //Delete user from database
     @Override
     public void deleteColegio(int id){
-        try {
-            jdbcTemplate = new JdbcTemplate(dataSource());
-        } catch (SQLException ex) {
-            Logger.getLogger(ColegioDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
         String query = "DELETE FROM colegio WHERE id = ?";
         jdbcTemplate.update(query,id);
     }
@@ -103,22 +81,8 @@ public class ColegioDAO implements IColegioDAO{
     //Update colegio from database
     @Override
     public void updateColegio(String nombre, String direccion, int id){           
-        try {
-            jdbcTemplate = new JdbcTemplate(dataSource());
-        } catch (SQLException ex) {
-            Logger.getLogger(ColegioDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
         String query = "UPDATE colegio SET nombre = ?,direccion = ? WHERE id = ?";
         jdbcTemplate.update(query,nombre,direccion,id);  
     }
-    
-    //DataSource properties
-    public static DataSource dataSource() throws SQLException{
-        SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
-        dataSource.setDriver(new com.mysql.cj.jdbc.Driver());
-        dataSource.setUrl("jdbc:mysql://localhost/colegio");
-        dataSource.setUsername("root");
-        dataSource.setPassword("root");
-        return dataSource;
-    }
+
 }
