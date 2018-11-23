@@ -10,44 +10,33 @@ import cl.spring.model.Profesor;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Martin
  */
+@Repository
 public class ProfesorDAO implements IProfesorDAO{
+    @Autowired
     private JdbcTemplate jdbcTemplate;
-    
-    public ProfesorDAO() {}
 
     //Insert colegio in database
     @Override
     public void insertarProfesor(Profesor profesor){
-            try {
-                jdbcTemplate = new JdbcTemplate(dataSource());
-            } catch (SQLException ex) {
-                Logger.getLogger(ColegioDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            String query = "INSERT INTO profesor(nombre,fechaNacimiento,asignatura,activo,colegio) VALUES(?,?,?,?,?)";
-            jdbcTemplate.update(query,profesor.getNombre(),profesor.getFechaNacimiento(),profesor.getAsignatura(),profesor.getActivo(),profesor.getColegio());  
+
+        String query = "INSERT INTO profesor(nombre,fechaNacimiento,asignatura,activo,colegio) VALUES(?,?,?,?,?)";
+        jdbcTemplate.update(query,profesor.getNombre(),profesor.getFechaNacimiento(),profesor.getAsignatura(),profesor.getActivo(),profesor.getColegio());  
     }
            
     //Read colegio from database
     @Override
     public Profesor leerProfesor(int id){
-        try {
-            jdbcTemplate = new JdbcTemplate(dataSource());
-        } catch (SQLException ex) {
-            Logger.getLogger(ColegioDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
         String query = "SELECT *FROM profesor WHERE id="+id;
         return jdbcTemplate.query(query, new ResultSetExtractor<Profesor>() {
             @Override
@@ -71,11 +60,6 @@ public class ProfesorDAO implements IProfesorDAO{
     //Read all profesor from database
     @Override
     public List<Profesor> leerAllProfesores(){
-        try {
-            jdbcTemplate = new JdbcTemplate(dataSource());
-        } catch (SQLException ex) {
-            Logger.getLogger(ColegioDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
         String query = "SELECT *FROM profesor";
         List<Profesor> lista = jdbcTemplate.query(query, new RowMapper<Profesor>() {
             @Override
@@ -95,11 +79,6 @@ public class ProfesorDAO implements IProfesorDAO{
     //Delete profesor from database
     @Override
     public void deleteProfesor(int id){
-        try {
-            jdbcTemplate = new JdbcTemplate(dataSource());
-        } catch (SQLException ex) {
-            Logger.getLogger(ColegioDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
         String query = "DELETE FROM profesor WHERE id = ?";
         jdbcTemplate.update(query,id);
     }
@@ -107,32 +86,12 @@ public class ProfesorDAO implements IProfesorDAO{
     //Update profesor from database
     @Override
     public void updateProfesor(String nombre, int asignatura, int activo, int colegio, int id){           
-        try {
-            jdbcTemplate = new JdbcTemplate(dataSource());
-        } catch (SQLException ex) {
-            Logger.getLogger(ColegioDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
         String query = "UPDATE profesor SET nombre = ?, asignatura = ?, activo = ?, colegio = ? WHERE id = ?";
         jdbcTemplate.update(query,nombre,asignatura,activo,colegio,id);  
     }
          
-    //DataSource properties
-    public static DataSource dataSource() throws SQLException{
-        SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
-        dataSource.setDriver(new com.mysql.cj.jdbc.Driver());
-        dataSource.setUrl("jdbc:mysql://localhost/colegio");
-        dataSource.setUsername("root");
-        dataSource.setPassword("root");
-        return dataSource;
-    }
-    
     @Override
     public List<Asignatura> leerAllAsignaturas(){
-        try {
-            jdbcTemplate = new JdbcTemplate(dataSource());
-        } catch (SQLException ex) {
-            Logger.getLogger(ColegioDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
         String query = "SELECT * FROM asignatura";
         List<Asignatura> lista = jdbcTemplate.query(query, new RowMapper<Asignatura>() {
             @Override

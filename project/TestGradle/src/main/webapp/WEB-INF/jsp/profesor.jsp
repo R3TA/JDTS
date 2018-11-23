@@ -17,7 +17,7 @@
 		<a href = "/">VOLVER AL HOME</a>
         <h1>MANTENEDOR DE PROFESOR</h1>
 		<div>
-			<form action="/mantenedor/profesor/add" method="GET">
+			<form action="/mantenedor/profesor/add" method="POST">
 				<label>Nombre:</label>
 					<span>
 						<input id="nombre" name="nombre" type="text" required></input>
