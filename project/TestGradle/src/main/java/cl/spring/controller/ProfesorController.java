@@ -13,6 +13,7 @@ import cl.spring.model.Profesor;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,15 +42,16 @@ public class ProfesorController {
         List<Colegio> listColegio = colegiodao.leerAllColegio();
         List<Profesor> listProfesor = profesordao.leerAllProfesores();
         List<Asignatura> listAsignatura = profesordao.leerAllAsignaturas();
+        JSONArray jsonarray = new JSONArray(listProfesor);
         model.addObject("listColegio", listColegio);
-        model.addObject("listProfesor", listProfesor);
+        model.addObject("listProfesor", jsonarray);
         model.addObject("listAsignatura",listAsignatura);
         model.setViewName("profesor");
         return model;
     }
     //Ruta con respuesta luego de insertar un profesor
-    @RequestMapping(path="/profesor/add", method=RequestMethod.POST) // Map ONLY GET Requests
-	public @ResponseBody String addProfesor (@RequestParam String nombre,@RequestParam String fechanacimiento,
+    @RequestMapping(path="/profesor/add", method=RequestMethod.POST)
+	public @ResponseBody String addProfesor(@RequestParam String nombre,@RequestParam String fechanacimiento,
 			@RequestParam int activo, @RequestParam int colegio, @RequestParam int asignatura) {
 		// @ResponseBody means the returned String is the response, not a view name
 		// @RequestParam means it is a parameter from the GET or POST request
@@ -61,7 +63,7 @@ public class ProfesorController {
                 profesor.setColegio(colegio);
 		profesor.setAsignatura(asignatura);
                 profesordao.insertarProfesor(profesor);
-		return "Saved";
+                return "Saved";
 	}
         
     //Ruta con formulario para editar un profesor   
@@ -84,7 +86,7 @@ public class ProfesorController {
 	}
     
     //Ruta con respuesta luego de actualizar un profesor    
-    @RequestMapping(path="/profesor/edited",method=RequestMethod.POST) // Map ONLY GET Requests
+    @RequestMapping(path="/profesor/edited",method=RequestMethod.POST)
 	public @ResponseBody String editedProfesor (@RequestParam String nombre,
 			@RequestParam int activo, @RequestParam int colegio, @RequestParam int asignatura, @RequestParam int id) {
 		// @ResponseBody means the returned String is the response, not a view name
