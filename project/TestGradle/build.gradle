@@ -50,7 +50,7 @@ dependencies {
     // You can read more about how to add dependency here:
     //   http://www.gradle.org/docs/current/userguide/dependency_management.html#sec:how_to_declare_your_dependencies
     compile('org.springframework.boot:spring-boot-starter-web','org.apache.tomcat.embed:tomcat-embed-jasper'
-	,'javax.servlet:jstl','mysql:mysql-connector-java','org.springframework.boot:spring-boot-starter-data-jpa','org.springframework.boot:spring-boot-starter-jdbc','org.springframework.boot:spring-boot-devtools')
+	,'javax.servlet:jstl','mysql:mysql-connector-java','org.springframework.boot:spring-boot-starter-data-jpa','org.springframework.boot:spring-boot-starter-jdbc','org.springframework.boot:spring-boot-devtools','org.json:json:20180130')
     testCompile('org.springframework.boot:spring-boot-starter-test')  
     testCompile group: 'junit', name: 'junit', version: '4.10'
 }
